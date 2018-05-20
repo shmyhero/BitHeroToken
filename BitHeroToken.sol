@@ -279,29 +279,16 @@ contract BitHeroToken is StandardToken, Ownable {
     uint8 public constant decimals = 2;
     uint256 public constant INITIAL_SUPPLY = 2 * 10 ** (9+2) ; //2 Billion Token
 	
-    // Address of token admin
-    //address public admin;
-	
 	using SafeMath for uint256;
-
-	struct DepositModel
-	 {
-		address from;
-		uint256 value;
-	 }
 	 
-	 //总入金数,也作为入金历史的index
-	 uint256 public depositNum = 0;
-	 //入金历史
-	 mapping (uint256 => DepositModel) deposits;	
+	 //入金记录的index
+	 uint256 public depositNum = 0;	
 	
     function BitHeroToken() public {
         totalSupply = INITIAL_SUPPLY;
         
         balances[msg.sender] = totalSupply;
         emit Transfer(address(0x0), msg.sender, totalSupply);
-
-        //admin = msg.sender;
     }
 	
 	function refund(address _to, uint _value, uint index) onlyOwner public returns (bool success) {
@@ -328,8 +315,7 @@ contract BitHeroToken is StandardToken, Ownable {
 		{			
 			if(to == owner)
 			{
-				depositNum += 1;
-				deposits[depositNum] = DepositModel(msg.sender, value); 
+				depositNum += 1;				
 				 
 				emit Deposit(depositNum, msg.sender, to, value);
 			}			
@@ -349,9 +335,4 @@ contract BitHeroToken is StandardToken, Ownable {
         return super.transferFrom(from, to, value);
     }
     
-	//function setAdmin(address newAdmin) onlyOwner public returns (bool) {
-    //    admin = newAdmin;
-		
-	//	return true;
-    //}
 }
