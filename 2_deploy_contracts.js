@@ -20,6 +20,6 @@ module.exports = function (deployer) {
     ]).then(function () {
         return deployer.deploy(AllocatedCrowdsale, CrowdsaleToken.address, FlatPricing.address, MultiSigWallet.address, start_, end_, minimumFundingGoal_, deploy_address);
     }).then(function () {
-        return deployer.deploy(DefaultFinalizeAgent, AllocatedCrowdsale.address, CrowdsaleToken.address);
+        return deployer.deploy(DefaultFinalizeAgent, CrowdsaleToken.address, AllocatedCrowdsale.address);
     });
 };
