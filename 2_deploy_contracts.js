@@ -6,8 +6,9 @@ var AllocatedCrowdsale = artifacts.require("AllocatedCrowdsale")
 var DefaultFinalizeAgent = artifacts.require("DefaultFinalizeAgent")
 
 module.exports = function (deployer) {
-    var start_ = new Date(2018, 8, 1, 0, 0).getTime() / 1000
-    var end_ = new Date(2019, 8, 1, 0, 0).getTime() / 1000
+    // in js, month start from 0, day start from 1.
+    var start_ = new Date(2018, 7, 1, 0, 0).getTime() / 1000
+    var end_ = new Date(2019, 7, 1, 0, 0).getTime() / 1000
     var minimumFundingGoal_ = 0
     var deploy_address = "0xA06b548d954Fa504e54BCCAD8f7F58361d8949E4"
     deployer.deploy(SafeMathLib);
