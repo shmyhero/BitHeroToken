@@ -11,7 +11,7 @@ module.exports = function (deployer) {
     var _walletAccounts = [_deployAddress]
     var _walletRequired = 1
     // who own all tokens
-    var _beneficiary = "0x443436cCddfeaCa2DD3a3dc191Ac6049022F8fcf"//_deployAddress
+    var _beneficiary = _deployAddress
     var _name = "BitHeroToken";
     var _symbol = "BTH";
     var _totalSupply = 10 ** 9 * 10 ** 18;

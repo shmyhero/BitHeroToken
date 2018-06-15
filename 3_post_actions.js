@@ -5,6 +5,7 @@ var DefaultFinalizeAgent = artifacts.require("DefaultFinalizeAgent")
 
 module.exports = function (deployer) {
     var _deployAddress = "0xA06b548d954Fa504e54BCCAD8f7F58361d8949E4";
+    var _beneficiary = _deployAddress
     var _publicSupply = 6.25 * 10**7 * 10**18;
     CrowdsaleToken.deployed().then(function (instance) {
         token = instance;
@@ -12,7 +13,7 @@ module.exports = function (deployer) {
         token.setTransferAgent(MultiSigWallet.address, true);
         token.setTransferAgent(AllocatedCrowdsale.address, true);
         token.setTransferAgent(DefaultFinalizeAgent.address, true);
-        token.setTransferAgent(_deployAddress, true);
+        token.setTransferAgent(_beneficiary, true);
 
         token.setReleaseAgent(DefaultFinalizeAgent.address);
         token.setUpgradeMaster(MultiSigWallet.address);
