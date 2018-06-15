@@ -10,25 +10,31 @@ import "./Crowdsale.sol";
 import "./ReleasableToken.sol";
 
 /**
- * A finalize agent that does nothing.
+ * The default behavior for the crowdsale end.
  *
- * - Token transfer must be manually released by the owner
+ * Unlock tokens.
  */
-contract NullFinalizeAgent is FinalizeAgent {
+contract DefaultFinalizeAgent is FinalizeAgent {
 
+  ReleasableToken public token;
   Crowdsale public crowdsale;
 
-  function NullFinalizeAgent(Crowdsale _crowdsale) {
+  function DefaultFinalizeAgent(ReleasableToken _token, Crowdsale _crowdsale) {
+    token = _token;
     crowdsale = _crowdsale;
   }
 
   /** Check that we can release the token */
   function isSane() public constant returns (bool) {
-    return true;
+    return (token.releaseAgent() == address(this));
   }
 
   /** Called once by crowdsale finalize() if the sale was success. */
   function finalizeCrowdsale() public {
+    if(msg.sender != address(crowdsale)) {
+      throw;
+    }
+    token.releaseTokenTransfer();
   }
 
 }

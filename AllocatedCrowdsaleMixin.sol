@@ -38,7 +38,12 @@ contract AllocatedCrowdsaleMixin is CrowdsaleBase {
     if(tokenAmount > getTokensLeft()) {
       return true;
     } else {
-      return false;
+      if (weiAmount < 10**17) {
+        return true;
+      }
+      else {
+        return false;
+      }
     }
   }
 
