@@ -6,19 +6,28 @@ var AllocatedCrowdsale = artifacts.require("AllocatedCrowdsale")
 var DefaultFinalizeAgent = artifacts.require("DefaultFinalizeAgent")
 
 module.exports = function (deployer) {
+    var _deployAddress = "0xA06b548d954Fa504e54BCCAD8f7F58361d8949E4";
+    // who own invested ETH
+    var _walletAccounts = [_deployAddress]
+    var _walletRequired = 1
+    // who own all tokens
+    var _beneficiary = "0x443436cCddfeaCa2DD3a3dc191Ac6049022F8fcf"//_deployAddress
+    var _name = "BitHeroToken";
+    var _symbol = "BTH";
+    var _totalSupply = 10 ** 9 * 10 ** 18;
+    var _decimals = 18;
     // in js, month start from 0, day start from 1.
-    var start_ = new Date(2018, 7, 1, 0, 0).getTime() / 1000
-    var end_ = new Date(2019, 7, 1, 0, 0).getTime() / 1000
-    var minimumFundingGoal_ = 0
-    var deploy_address = "0xA06b548d954Fa504e54BCCAD8f7F58361d8949E4"
+    var _start = new Date(2018, 7, 1, 0, 0).getTime() / 1000;
+    var _end = new Date(2019, 7, 1, 0, 0).getTime() / 1000;
+    var _minimumFundingGoal = 0;
     deployer.deploy(SafeMathLib);
     deployer.link(SafeMathLib, [CrowdsaleToken, FlatPricing, AllocatedCrowdsale]);
     deployer.deploy([
-        [MultiSigWallet, [deploy_address], 1],
-        [CrowdsaleToken, "BitHeroToken", "BTH", 10**9 * 10**18, 18, false],
-        [FlatPricing, 10**16]
+        [MultiSigWallet, _walletAccounts, _walletRequired],
+        [CrowdsaleToken, _name, _symbol, _totalSupply, _decimals, false],
+        [FlatPricing, 1.5*10**14]
     ]).then(function () {
-        return deployer.deploy(AllocatedCrowdsale, CrowdsaleToken.address, FlatPricing.address, MultiSigWallet.address, start_, end_, minimumFundingGoal_, deploy_address);
+        return deployer.deploy(AllocatedCrowdsale, CrowdsaleToken.address, FlatPricing.address, MultiSigWallet.address, _start, _end, _minimumFundingGoal, _beneficiary);
     }).then(function () {
         return deployer.deploy(DefaultFinalizeAgent, CrowdsaleToken.address, AllocatedCrowdsale.address);
     });
